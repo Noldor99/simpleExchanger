@@ -1,36 +1,29 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux'
 
 import Header from "./components/Header";
-import { useGetRatesQuery, useLazyGetRatesQuery } from "./store/redusers/rateApi";
  
 
 const App = () => {
 
-  const {allRates} = useSelector(state => state.rates);
+  const [users, setUsers] = useState([]);
 
-  console.log(allRates)
-  
-  const [fetchRats] = useLazyGetRatesQuery( )
-  
-  const {data} = useGetRatesQuery()
-
-  console.log(data)
-
- 
-
- 
-  
   useEffect(() => {
-   
-    fetchRats() 
+    axios.get(`/p24api/pubinfo?json&exchange&coursid=5`).then((res) => {
+      const users = res.data;
+      setUsers(users)
+      console.log(users);
+    });
  
   }, []);
 
   return (
     <>
-      <Header/> 
+      <Header/>
+      {users.map((item)=>
+        <p>{item.buy}</p>
+      )}
     </>
 
   )
